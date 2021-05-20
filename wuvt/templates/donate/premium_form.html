@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+{% block title %}Make a Donation - {{ super() }}{% endblock %}
+{% block content %}
+
+<section>
+    <header>
+        <h2>{% block donate_title %}Make a One-Time Donation{% endblock %}</h2>
+    </header>
+
+    <noscript><p>Sorry, but you'll need JavaScript enabled to donate. This
+    allows us to process your donation without your credit card information
+    ever touching our server.</p></noscript>
+
+    <div id="donate_loading_message">
+        <p>Please wait a few seconds for the donate form to load...</p>
+    </div>
+
+    <form action="{{ url_for('donate.process') }}" method="post"
+            id="donate_form">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}" />
+        <input type="hidden" name="stripe_token" id="id_stripe_token" value="" />
+
+        <label>
+            Your Name
+            <input type="text" name="name" id="id_name" value="" />
+        </label>
+
+        {% block pledge_amount %}
+        <label>
+            Pledge Amount
+            <input type="text" inputmode="numeric" name="amount"
+                id="id_amount" pattern="\$?\d+(\.\d{2})?"
+                placeholder="35.00" required="required" />
+        </label>
+        {% endblock %}
+
+        <label>
+            Email Address
+            <input type="email" name="email" id="id_email" value=""
+                placeholder="you@example.com" required="required" />
+        </label>
+
+        <label>
+            Show to Credit
+            <input type="text" name="show" id="id_show" value="" />
+        </label>
+
+        <label>
+            Comment
+            <input type="text" name="comment" id="id_comment" value="" />
+        </label>
+
+{% if premiums_config.enabled %}
+        <label>
+            Would you like any premiums?
+        </label>
+
+        <label>
+            <input type="radio" name="premiums" id="id_premiums_no"
+                value="no" checked="checked" />
+            No, I'd like my entire donation to go towards WUVT
+        </label>
+
+        <label>
+            <input type="radio" name="premiums" id="id_premiums_pickup"
+                value="pickup" />
+            Yes, I'll pick them up in 350 Squires Student Center
+        </label>
+
+        <label>
+            <input type="radio" name="premiums" id="id_premiums_ship"
+                value="ship" />
+            Yes, ship them to me (+${{ premiums_config.shipping_cost // 100 }}, US only)
+        </label>
+
+        <div id="premium_fields">
+        <p>
+            <b>Note:</b> we are unable to guarantee premium availability if pledges
+            are made outside of Radiothon week. If you make a recurring monthly
+            donation, you will only be sent premiums for the first month.
+        </p>
+
+{% if premiums_config.premiums.tshirt %}
+        <label>
+            {{ premiums_config.premiums.tshirt.display }} Size
+            <select id="id_tshirtsize" name="tshirtsize">
+                {% for size in premiums_config.premiums.tshirt.sizes %}
+                <option value="{{ size }}">{{ size }}</option>
+                {% endfor %}
+            </select>
+        </label>
+
+{% if premiums_config.premiums.tshirt.colors|length > 0 %}
+        <label>
+            {{ premiums_config.premiums.tshirt.display }} Color
+            <select id="id_tshirtcolor" name="tshirtcolor">
+                {% for color in premiums_config.premiums.tshirt.colors %}
+                <option value="{{ color }}">{{ color }}</option>
+                {%- endfor %}
+            </select>
+        </label>
+{% endif %}
+{% endif %}
+
+{% if premiums_config.premiums.sweatshirt %}
+        <label>
+            {{ premiums_config.premiums.sweatshirt.display }} Size
+            <select id="id_sweatshirtsize" name="sweatshirtsize">
+                {% for size in premiums_config.premiums.sweatshirt.sizes %}
+                <option value="{{ size }}">{{ size }}</option>
+                {% endfor %}
+            </select>
+        </label>
+{% endif %}
+        </div>
+
+        <div id="shipping_fields">
+        <label>
+            Address
+            <input type="text" name="address_1" id="id_address_1" value="" />
+        </label>
+
+        <label>
+            Address 2
+            <input type="text" name="address_2" id="id_address_2" value="" />
+        </label>
+
+        <label>
+            City
+            <input type="text" name="city" id="id_city" value="" />
+        </label>
+
+        <label>
+            State
+            <input type="text" name="state" id="id_state" value="" />
+        </label>
+
+        <label>
+            ZIP Code
+            <input type="text" name="zipcode" id="id_zipcode" value="" />
+        </label>
+        </div>
+{% endif %}
+
+        <label>
+            May we thank you publicly?
+            <select name="onair" id="id_onair">
+                <option value="y">Yes</option>
+                <option value="n">No</option>
+            </select>
+        </label>
+
+        <label>
+            Is this your first time contributing?
+            <select name="firsttime" id="id_firsttime">
+                <option value="y">Yes</option>
+                <option value="n" selected="selected">No</option>
+            </select>
+        </label>
+
+        <button type="submit" class="btn-primary">Donate Now</button>
+    </form>
+
+    <footer></footer>
+</section>
+{% endblock %}
+{% block js %}
+{{ super() }}
+<div id="extra_js">
+<script src="{{ url_for('static', filename='js/donate.js') }}"></script>
+<script src="https://checkout.stripe.com/checkout.js"></script>
+<script src="{{ url_for('donate.init_js') }}"></script>
+</div>
+{% endblock %}

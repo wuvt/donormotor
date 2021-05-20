@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Donation Error - {{ super() }}{% endblock %}
+{% block content %}
+
+<section>
+    <header>
+        <h2>Donation Error</h2>
+    </header>
+
+    <p>We're sorry, but there was a problem with your donation. The following
+    error messages were returned:</p>
+
+    <ul>
+    {% for msg in messages -%}
+        <li>{{ msg }}</li>
+    {% endfor -%}
+    </ul>
+
+    <p>Please try to make your donation again. If you continue to get this
+    error, please contact the station for assistance.</p>
+
+    <footer>
+    </footer>
+</section>
+
+{% endblock %}

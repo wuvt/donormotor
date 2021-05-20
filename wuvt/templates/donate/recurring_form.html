@@ -1,0 +1,13 @@
+{% extends "donate/premium_form.html" %}
+{% block donate_title %}Make a Recurring Donation{% endblock %}
+{% block pledge_amount %}
+        <label>
+            Monthly Pledge Amount
+            <select name="plan" id="id_plan" required="required">
+                <option value="" disabled="disabled">Select a plan</option>
+                {% for plan in plans %}
+                <option value="{{ plan.id }}" data-amount="{{ plan.amount }}">{{ plan.name }}</option>
+                {% endfor %}
+            </select>
+        </label>
+{% endblock %}

@@ -1,0 +1,81 @@
+{% macro render_chart_albums(results) %}
+<table class="tracklist tracklist-ranked chart">
+    <thead>
+        <th></th>
+        <th>Artist</th>
+        <th>Album</th>
+        <th class="text-right">Spins</th>
+    </thead>
+    <tbody>
+    {% for artist, album, spins, ranking in results %}
+        <tr>
+            <td>{{ ranking }}</td>
+            <td>{{ artist }}</td>
+            <td>{{ album }}</td>
+            <td class="text-right">{{ spins }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endmacro %}
+
+{% macro render_chart_artists(results) %}
+<table class="tracklist tracklist-ranked chart">
+    <thead>
+        <th></th>
+        <th>Artist</th>
+        <th class="text-right">Spins</th>
+    </thead>
+    <tbody>
+    {% for artist, spins, ranking in results %}
+        <tr>
+            <td>{{ ranking }}</td>
+            <td>{{ artist }}</td>
+            <td class="text-right">{{ spins }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endmacro %}
+
+{% macro render_chart_tracks(results) %}
+<table class="tracklist tracklist-ranked chart">
+    <thead>
+        <th></th>
+        <th>Artist</th>
+        <th>Track</th>
+        <th>Album</th>
+        <th class="text-right">Spins</th>
+    </thead>
+    <tbody>
+    {% for track, spins, ranking in results %}
+        <tr>
+            <td>{{ ranking }}</td>
+            <td>{{ track.artist }}</td>
+            <td><a href="{{ url_for('playlists.playlists_track', track_id=track.id) }}">{{ track.title }}</a></td>
+            <td>{{ track.album }}</td>
+            <td class="text-right">{{ spins }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endmacro %}
+
+{% macro render_chart_dj(results) %}
+<table class="tracklist tracklist-ranked chart">
+    <thead>
+        <th></th>
+        <th>DJ</th>
+        <th class="text-right">Spins</th>
+    </thead>
+    <tbody>
+    {% for dj, spins, ranking in results %}
+        <tr>
+            <td>{{ ranking }}</td>
+            <td><a href="{{ url_for('playlists.playlists_dj_sets', dj_id=dj.id) }}">{{ dj.airname }}</a></td>
+            <td class="text-right">{{ spins }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endmacro %}

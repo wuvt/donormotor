@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Playlist Archive (by DJ) - {{ super() }}{% endblock %}
+
+{% block content %}
+<section>
+    <header>
+        <h2>Playlist Archive (by DJ)</h2>
+    </header>
+
+    <ul>
+        {% for dj in djs %}
+        <li><a href="{{ url_for('playlists.playlists_dj_sets', dj_id=dj.id) }}">{{ dj.airname }}</a></li>
+        {% endfor %}
+    </ul>
+</section>
+
+<section class="pagination">
+    <a href="{{ url_for('playlists.playlists_dj') }}">Show only current DJs</a>
+</section>
+{% endblock %}

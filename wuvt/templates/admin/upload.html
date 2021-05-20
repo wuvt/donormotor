@@ -1,0 +1,32 @@
+{% extends "admin/base.html" %}
+{% block nav_admin_upload %}<li class="active"><a href="{{ url_for('admin.upload') }}">Upload</a></li>{% endblock %}
+
+{% block content %}
+<h1>File Upload</h1>
+
+<form method="POST" enctype="multipart/form-data" class="form-horizontal">
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}" />
+
+    <div class="form-group">
+        <label for="id_destination" class="col-sm-3 control-label">Destination</label>
+        <div class="col-sm-9">
+            <select name="destination" id="id+destination" class="form-control">
+                <option value="default">default</option>
+            </select>
+        </div>
+    </div>
+
+    <div id="file-uploader" class="form-group">
+        <label for="file_upload" class="col-sm-3 control-label">File Selector</label>
+        <div class="col-sm-9">
+            <input type="file" name="file" id="file_upload" name="file_upload" />
+        </div>
+    </div>
+
+    <div class="form-actions">
+        <button id="upload_btn" type="submit" class="btn btn-primary">
+            Upload
+        </button>
+    </div>
+</form>
+{% endblock %}

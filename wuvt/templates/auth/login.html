@@ -1,0 +1,33 @@
+{% extends "admin/base.html" %}
+{% set page_title="Login" %}
+{% block bodyattrib %} class="page-signin"{% endblock %}
+{% block header %}{% endblock %}
+
+{% block content %}
+{% for msg in errors %}
+<div class="alert alert-danger">{{ msg }}</div>
+{% endfor %}
+
+<form action="{{ url_for('auth_local.login') }}" method="post" class="form-signin">
+    <h1>
+        <a href="{{ url_for('blog.index') }}" title="{{ config.STATION_NAME }}">
+            {{ config.STATION_NAME }}
+        </a>
+    </h1>
+
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}" />
+
+    <div class="form-group">
+        <input type="text" name="username" id="id_username" value=""
+            placeholder="Username" class="form-control" />
+
+        <input type="password" name="password" id="id_password" value=""
+            placeholder="Password" class="form-control" />
+    </div>
+
+    <button class="btn btn-primary btn-block btn-lg" type="submit">
+        <span class="glyphicon glyphicon-log-in"></span>
+        Login
+    </button>
+</form>
+{% endblock %}
