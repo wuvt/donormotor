@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+
+        <title>{% if page_title %}{{ page_title }} &ndash; {% endif %}WUVT Administration</title>
+
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" />
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap/css/bootstrap-theme.min.css') }}" />
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/admin.css', v=3) }}" />
+
+        <link rel="shortcut icon"
+            href="{{ url_for('static', filename='img/favicon.ico') }}" />
+        <link rel="apple-touch-icon"
+            href="{{ url_for('static', filename='img/icon.png') }}" />
+    </head>
+    <body{% block bodyattrib %}{% endblock %}>
+        {% block header %}
+        <nav class="navbar navbar-default">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#admin-top-navbar" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{ url_for('admin.index') }}">WUVT Admin</a>
+            </div>
+            <div class="collapse navbar-collapse" id="admin-top-navbar">
+                <ul class="nav navbar-nav">
+                    {% block nav_admin_index %}<li><a href="{{ url_for('admin.index') }}">Home</a></li>{% endblock %}
+                    {% if 'admin' in current_user_roles or 'content' in current_user_roles %}{% block nav_admin_upload %}<li><a href="{{ url_for('admin.upload') }}">Upload</a></li>{% endblock %}{% endif %}
+                    {% if 'admin' in current_user_roles or config.AUTH_METHOD == "local" %}{% block nav_admin_users %}<li><a href="{{ url_for('admin.users') }}">Users</a></li>{% endblock %}{% endif %}
+                    {% if 'admin' in current_user_roles %}{% block nav_admin_roles %}<li><a href="{{ url_for('admin.roles') }}">Roles</a></li>{% endblock %}{% endif %}
+                    {% if 'business' in current_user_roles %}{% block nav_admin_donation %}<li><a href="{{ url_for('admin.donation_index') }}">Donations</a></li>{% endblock %}{% endif %}
+                </ul>
+                <form action="{{ url_for('auth.logout') }}" method="post" class="navbar-form navbar-right">
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}" />
+                    <button type="submit" class="btn btn-default">
+                        <span class="glyphicon glyphicon-log-out"></span>
+                        Logout
+                    </button>
+                </form>
+                <p class="navbar-text navbar-right">
+                    Logged in as {{ current_user.name }}
+                </p>
+            </div>
+        </nav>
+        {% endblock %}
+
+<div class="container">
+    {% for msg in get_flashed_messages() %}
+    <div class="alert alert-info">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ msg }}
+    </div>
+    {% endfor %}
+
+{% block content %}
+{% endblock %}
+</div>
+
+{% block js %}
+<script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+<script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+{% endblock %}
+    </body>
+</html>
