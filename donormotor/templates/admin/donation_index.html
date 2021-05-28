@@ -68,11 +68,11 @@
 {% endif %}
             </td>
             <td>{% if donation.shipped_date %}{{ donation.shipped_date|datetime }}
-		{% else %}<form method="post">
+		{% else %}{% if donation.premiums is not none %} <form method="post">
 			<input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
 			<input type="hidden" name="id" value="{{ donation.id }}">
 			<button name="set_shipped" type="submit" class="btn btn-sm">Set as Shipped</button></form>
-		{% endif %}</td>
+		{% endif %}{% endif %}</td>
             <td>{{ (donation.amount / 100)|format_currency }}</td>
             <td>{{ donation.recurring }}</td>
             <td>{% if donation.tshirtsize %}{{ donation.tshirtsize }}{% endif %}</td>
