@@ -9,7 +9,7 @@ class RenderSVGsCommand(distutils.cmd.Command):
     user_options = []
 
     def initialize_options(self):
-        self.img_path = 'wuvt/static/img'
+        self.img_path = 'donormotor/static/img'
         self.sources = [
             ('moon.svg', 1200, 42),
             ('logo.svg', 200, 85),
@@ -44,13 +44,13 @@ class RenderSVGsCommand(distutils.cmd.Command):
 
 
 setup(
-    name="wuvt-site",
-    py_modules=["wuvt"],
-    description="Next generation website for WUVT-FM",
+    name="donormotor",
+    py_modules=["donormotor"],
+    description="Next generation donation manager for WUVT-FM",
     license="AGPL3",
-    author="wuvt-site authors",
-    keywords="wuvt",
-    url="https://github.com/wuvt/wuvt-site",
+    author="donormotor authors",
+    keywords="donormotor wuvt",
+    url="https://github.com/wuvt/donormotor",
     install_requires=[
         "bleach",
         "celery",

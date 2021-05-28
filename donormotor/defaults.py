@@ -60,7 +60,6 @@ AUTH_METHOD = 'local'
 AUTH_SUPERADMINS = ['admin']
 AUTH_ROLE_GROUPS = {
     'admin': ['webmasters'],
-    'content': ['webmasters'],
     'business': ['business'],
     'missioncontrol': ['missioncontrol'],
 }

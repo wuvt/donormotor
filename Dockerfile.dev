@@ -26,10 +26,10 @@ WORKDIR /usr/src/uwsgi
 # prepare uwsgi
 RUN wget -O uwsgi-2.0.15.tar.gz https://github.com/unbit/uwsgi/archive/2.0.15.tar.gz && \
         tar --strip-components=1 -axvf uwsgi-2.0.15.tar.gz
-COPY uwsgi_profile.ini buildconf/wuvt.ini
+COPY uwsgi_profile.ini buildconf/donormotor.ini
 
 # build and install uwsgi
-RUN python uwsgiconfig.py --build wuvt && cp uwsgi /usr/local/bin/ && \
+RUN python uwsgiconfig.py --build donormotor && cp uwsgi /usr/local/bin/ && \
         mkdir -p /usr/local/lib/uwsgi/plugins
 
 WORKDIR /usr/src/app
@@ -41,13 +41,13 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . /usr/src/app
 
 ENV PYTHONPATH /usr/src/app
-ENV FLASK_APP wuvt
+ENV FLASK_APP donormotor
 ENV USE_EMBEDDED_DB 1
 
 RUN python setup.py render_svgs
 
 # set permissions and create media directory
-RUN chown www-data:www-data wuvt . && \
+RUN chown www-data:www-data donormotor . && \
         install -d -o www-data -g www-data /data/media && \
         install -d -o redis -g redis -m 0700 /var/lib/redis && \
         install -d -o redis -g redis -m 0700 /var/run/redis

@@ -1,6 +1,6 @@
 from flask import abort, request, Response
 from functools import wraps
-from wuvt import app
+from donormotor import app
 import netaddr
 import re
 import socket

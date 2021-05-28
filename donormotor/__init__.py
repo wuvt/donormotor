@@ -112,7 +112,7 @@ csrf = CSRFProtect(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-from wuvt.auth import AuthManager, current_user
+from donormotor.auth import AuthManager, current_user
 auth_manager = AuthManager()
 auth_manager.db = db
 auth_manager.init_app(app)

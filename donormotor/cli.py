@@ -2,7 +2,8 @@ import click
 import os
 import random
 import string
-from wuvt import app, db_utils
+from donormotor import app, db
+from donormotor.auth.models import User
 
 
 @app.cli.command()
@@ -21,14 +22,16 @@ def init_embedded_db():
     password = ''.join(random.SystemRandom().sample(
         string.ascii_letters + string.digits, 12))
     click.echo('Password for admin will be set to: {0}'.format(password))
+    username="admin"
 
-    db_utils.initdb('admin', password)
+    db.create_all()
+    user = User(str(username), str(username),
+                "{0}@localhost".format(username))
+    user.set_password(str(password))
+    db.session.add(user)
 
     click.echo("Database initialized.")
 
-    click.echo("Add sample data...")
-    db_utils.add_sample_data()
-    click.echo("Sample data added.")
 
 
 @app.cli.command()
@@ -37,13 +40,10 @@ def init_embedded_db():
 def initdb(username, password):
     """Initialize the database."""
     click.echo("Initialize the database...")
-    db_utils.initdb(username, password)
+    db.create_all()
+    user = User(str(username), str(username),
+                "{0}@localhost".format(username))
+    user.set_password(str(password))
+    db.session.add(user)
     click.echo("Database initialized.")
 
-
-@app.cli.command()
-def sampledata():
-    """Add some sample data to the database."""
-    click.echo("Add sample data...")
-    db_utils.add_sample_data()
-    click.echo("Sample data added.")
