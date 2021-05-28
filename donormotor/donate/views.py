@@ -68,7 +68,7 @@ def process_order(method):
     if 'comment' in request.form:
         order.donor_comment = request.form['comment'].strip()
 
-    if premiums_config['enabled']:
+    if premiums_config['enabled'] and redis_conn.get('radiothon') == b"true":
         premiums = request.form.get('premiums', 'no')
 
         if premiums != "no":

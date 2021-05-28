@@ -67,6 +67,28 @@ def donation_index():
         if 'reset_stats' in request.form:
             redis_conn.set('donation_stats_start',
                            datetime.datetime.utcnow().isoformat())
+        if 'set_paid' in request.form:
+            # TODO log who set as paid
+            o = Order.query.get(request.form["id"])
+            o.set_paid(method="check")
+            try:
+                db.session.commit()
+            except:
+                db.session.rollback()
+                raise
+
+        # TODO support setting asynchronously, rather than redirecting
+        if 'set_shipped' in request.form:
+            # TODO log who set as paid
+            o = Order.query.get(request.form["id"])
+            o.set_shipped()
+            try:
+                db.session.commit()
+            except:
+                db.session.rollback()
+                raise
+
+
         return redirect(url_for('.donation_index'))
 
     stats = Order.query.with_entities(
