@@ -4,6 +4,7 @@ import random
 import string
 from donormotor import app, db
 from donormotor.auth.models import User
+import donormotor.donate.models
 
 
 @app.cli.command()
@@ -12,9 +13,9 @@ def init_embedded_db():
 
     # The SQLALCHEMY_DATABASE_URI config option will match the corresponding
     # environment variable when we are using the embedded database.
-    if app.config['SQLALCHEMY_DATABASE_URI'] != \
-            os.getenv('SQLALCHEMY_DATABASE_URI'):
-        return
+    #if app.config['SQLALCHEMY_DATABASE_URI'] != \
+    #        os.getenv('SQLALCHEMY_DATABASE_URI'):
+    #    return
 
     click.echo("Initialize the database...")
 
@@ -29,6 +30,7 @@ def init_embedded_db():
                 "{0}@localhost".format(username))
     user.set_password(str(password))
     db.session.add(user)
+    db.session.commit()
 
     click.echo("Database initialized.")
 
@@ -45,5 +47,6 @@ def initdb(username, password):
                 "{0}@localhost".format(username))
     user.set_password(str(password))
     db.session.add(user)
+    db.session.commit()
     click.echo("Database initialized.")
 

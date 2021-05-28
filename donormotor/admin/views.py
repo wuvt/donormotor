@@ -11,6 +11,7 @@ from donormotor.auth import current_user, login_required
 from donormotor.admin import bp
 from donormotor.auth.models import User
 from donormotor.admin.auth import views as auth_views  # noqa: F401
+from donormotor.donate.models import Order
 import csv
 import io
 
@@ -61,8 +62,6 @@ def upload():
 @bp.route('/donations', methods=['GET', 'POST'])
 @auth_manager.check_access('business')
 def donation_index():
-    if not app.config['DONATE_ENABLE']:
-        abort(404)
 
     if request.method == 'POST':
         if 'reset_stats' in request.form:
