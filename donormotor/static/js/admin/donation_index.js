@@ -4,4 +4,12 @@ $('#donations').DataTable({
     'order': [[3, 'desc']],
 });
 
+$('#reset_donation_stats').on("click", confirm_delete);
+
+function confirm_delete(e){
+    if(!confirm('Are you sure you want to reset donation stats?')){
+	e.preventDefault();
+    }
+}
+
 // @license-end
