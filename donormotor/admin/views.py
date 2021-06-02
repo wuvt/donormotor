@@ -3,7 +3,7 @@ import datetime
 import dateutil.parser
 import os
 from flask import abort, flash, jsonify, make_response, render_template, \
-        redirect, request, url_for
+        redirect, request, url_for, json
 from werkzeug import secure_filename
 
 from donormotor import app, auth_manager, cache, db, redis_conn
@@ -128,16 +128,23 @@ def donate_csv_download():
             "attachment; filename=\"{0}\"".format(filename),
     }
 
-@bp.route('/premium-config')
+@bp.route('/premium-config', methods=['GET', 'POST'])
 @auth_manager.check_access('business')
 def premium_config():
     #TODO add form handling for this, store config in redis?
     if request.method == 'GET':
-        return render_template('admin/premium_config',
-                radiothon=redis_conn.get('radiothon'),
+        return render_template('admin/premium_config.html',
+                radiothon=str(redis_conn.get('radiothon')),
                 premiums=json.loads(redis_conn.get('donate_premiums_config')))
     if request.method == 'POST':
-        if enable_radiothon in request.form:
+        if 'enable_radiothon' in request.form:
             redis_conn.set('radiothon', b"true")
-        p = b'{"enabled":true,"premiums":{"sweatshirt":{"display":"Sweatshirt","sizes":["None","S","M","L","XL","XXL"]},"tshirt":{"display":"T-Shirt","sizes":["None","S","M","L","XL","XXL"]}},"shipping_cost":600,"shipping_minimum":2000}'
-
+        elif 'disable_radiothon' in request.form:
+            redis_conn.set('radiothon', b"false")
+        if 'default_premiums' in request.form:
+            p = b'{"enabled":true,"premiums":{"sweatshirt":{"display":"Sweatshirt","sizes":["None","S","M","L","XL","XXL"]},"tshirt":{"display":"T-Shirt","sizes":["None","S","M","L","XL","XXL"]}},"shipping_cost":600,"shipping_minimum":2000}'
+            redis_conn.set('donate_premiums_config', p)
+        elif 'premiums' in request.form:
+            p = json.dumps(request.form['premiums'])
+            redis_conn.set('donate_premiums_config', p)
+        return redirect(url_for('.premium_config'))

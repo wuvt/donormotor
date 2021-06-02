@@ -1,0 +1,36 @@
+{% extends "admin/base.html" %}
+{% set page_title="Premium Config" %}
+{% block nav_admin_donation%}<li class="active"><a href="{{ url_for('admin.donation_index') }}">Donations</a></li>{% endblock %} <!-- FIXME! -->
+
+{% block content %}
+<div class="card panel panel-default">
+    <div class="card-body panel-body">
+        <form method="post">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+            Radiothon Mode:
+                <div class="btn-group btn-group-sm">
+                    <button name="enable_radiothon" type="submit" class="btn btn-sm btn-info"
+                            {% if radiothon == "b'true'" %}disabled{% endif %}>
+                        Enable</button>
+                    <button name="disable_radiothon" type="submit" class="btn btn-sm btn-info"
+                            {% if radiothon == "b'false'" %}disabled{% endif %}>
+                        Disable</button>
+                </div>
+        </form>
+    </div>
+</div>
+<div class="card panel panel-default">
+    <div class="card-body panel-body">
+        <form method="post">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+            Premiums config: <br>
+            <label for="premiums">Premiums:</label>
+	    <textarea id="premiums" name="premiums">{{ premiums }}</textarea> <br>
+            <div class="btn-group btn-group-sm">
+                <button name="update_premiums" type="submit" class="btn btn-sm">Update</button>
+                <button name="default_premiums" type="submit" class="btn btn-sm btn-danger">Reset</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
