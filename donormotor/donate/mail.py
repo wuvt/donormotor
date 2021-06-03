@@ -1,12 +1,17 @@
 from flask import current_app, render_template
+from donormotor import redis_conn
 from email.mime.text import MIMEText
 import email.utils
 import smtplib
 
 
 def send_receipt(order):
+    try:
+        ack_email_body = redis_conn.get('ack_email').decode()
+    except:
+        ack_email_body = ''
     msg = MIMEText(render_template('donate/email/receipt.txt',
-                                   order=order))
+                                   order=order, ack_email_body=ack_email_body))
     msg['Date'] = email.utils.formatdate()
     msg['From'] = current_app.config['DONATE_MAIL_FROM']
     msg['To'] = order.email

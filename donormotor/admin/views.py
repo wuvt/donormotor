@@ -134,8 +134,9 @@ def premium_config():
     #TODO add form handling for this, store config in redis?
     if request.method == 'GET':
         return render_template('admin/premium_config.html',
-                radiothon=str(redis_conn.get('radiothon')),
-                premiums=json.loads(redis_conn.get('donate_premiums_config')))
+                radiothon=redis_conn.get('radiothon').decode(),
+                premiums=json.loads(redis_conn.get('donate_premiums_config')),
+                ack_email=redis_conn.get('ack_email').decode())
     if request.method == 'POST':
         if 'enable_radiothon' in request.form:
             redis_conn.set('radiothon', b"true")
@@ -147,4 +148,9 @@ def premium_config():
         elif 'premiums' in request.form:
             p = json.dumps(request.form['premiums'])
             redis_conn.set('donate_premiums_config', p)
+        if 'default_ack_email' in request.form:
+            redis_conn.set('ack_email', b'');
+        elif 'update_ack_email' in request.form:
+            p = request.form['ack_email'].encode()
+            redis_conn.set('ack_email', p)
         return redirect(url_for('.premium_config'))
