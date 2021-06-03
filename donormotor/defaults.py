@@ -12,20 +12,6 @@ SANITIZE_SUMMARY = True
 STATION_NAME = "WUVT-FM 90.7 Blacksburg, VA"
 STATION_SHORT_NAME = "WUVT-FM"
 STATION_URL = "https://www.wuvt.vt.edu"
-NAV_TOP_SECTIONS = [
-    {'menu': 'about',
-     'name': 'About',
-     'slug': 'wuvt'},
-    {'menu': 'community',
-     'name': 'Community'},
-    {'menu': 'playlists',
-     'name': 'Playlists'},
-    {'menu': 'shows',
-     'name': 'Shows'},
-    {'menu': 'hidden',
-     'name': 'Hidden',
-     'hidden': True},
-]
 
 INTERNAL_IPS = ['127.0.0.1/8']
 TRACKMAN_URL = "http://localhost:9090/"
@@ -59,7 +45,6 @@ WTF_CSRF_TIME_LIMIT = 2678400
 AUTH_METHOD = 'local'
 AUTH_SUPERADMINS = ['admin']
 AUTH_ROLE_GROUPS = {
-    'admin': ['webmasters'],
     'business': ['business'],
     'missioncontrol': ['missioncontrol'],
 }

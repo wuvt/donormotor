@@ -35,7 +35,6 @@ def init_embedded_db():
     click.echo("Database initialized.")
 
 
-
 @app.cli.command()
 @click.option('--username', default="admin")
 @click.password_option()
