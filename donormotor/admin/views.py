@@ -98,6 +98,42 @@ def donation_index():
                            max=max_donation,
                            last_stats_reset=last_stats_reset)
 
+@bp.route('/reports', methods=['GET', 'POST'])
+@auth_manager.check_access('business')
+def donate_reports_and_stats():
+
+    if request.method == 'POST':
+        if 'reset_stats' in request.form:
+            redis_conn.set('donation_stats_start',
+                           datetime.datetime.utcnow().isoformat())
+        return redirect(url_for('.donate_reports_and_stats'))
+
+    stats = Order.query.with_entities(
+        db.func.sum(Order.amount).label('total_paid'),
+        db.func.max(Order.amount).label('max_paid'))
+
+    donation_stats_start = redis_conn.get('donation_stats_start')
+    if donation_stats_start is not None:
+        last_stats_reset = dateutil.parser.parse(donation_stats_start)
+        stats = stats.filter(Order.placed_date > last_stats_reset)
+    else:
+        last_stats_reset = None
+
+    stats = stats.all()
+
+    total = stats[0][0]
+    if total is None:
+        total = 0
+
+    max_donation = stats[0][1]
+    if max_donation is None:
+        max_donation = 0
+
+    return render_template('admin/reports.html',
+                           total=total,
+                           max=max_donation,
+                           last_stats_reset=last_stats_reset)
+
 @bp.route('/donate/csv')
 @auth_manager.check_access('business')
 def donate_csv_download():
