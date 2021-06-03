@@ -29,10 +29,6 @@
             <div class="collapse navbar-collapse" id="admin-top-navbar">
                 <ul class="nav navbar-nav">
                     {% block nav_admin_index %}<li><a href="{{ url_for('admin.index') }}">Home</a></li>{% endblock %}
-                    {% if 'admin' in current_user_roles or 'content' in current_user_roles %}{% block nav_admin_upload %}<li><a href="{{ url_for('admin.upload') }}">Upload</a></li>{% endblock %}{% endif %}
-                    {% if 'admin' in current_user_roles or config.AUTH_METHOD == "local" %}{% block nav_admin_users %}<li><a href="{{ url_for('admin.users') }}">Users</a></li>{% endblock %}{% endif %}
-                    {% if 'admin' in current_user_roles %}{% block nav_admin_roles %}<li><a href="{{ url_for('admin.roles') }}">Roles</a></li>{% endblock %}{% endif %}
-                    {% if 'business' in current_user_roles %}{% block nav_admin_donation %}<li><a href="{{ url_for('admin.donation_index') }}">Donations</a></li>{% endblock %}{% endif %}
                 </ul>
                 <form action="{{ url_for('auth.logout') }}" method="post" class="navbar-form navbar-right">
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}" />
