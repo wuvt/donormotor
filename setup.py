@@ -11,12 +11,7 @@ class RenderSVGsCommand(distutils.cmd.Command):
     def initialize_options(self):
         self.img_path = 'donormotor/static/img'
         self.sources = [
-            ('moon.svg', 1200, 42),
-            ('logo.svg', 200, 85),
-            ('bubble.svg', 558, 99),
-            ('nowplaying_banner_left.svg', 32, 15),
-            ('nowplaying_banner_right.svg', 52, 34),
-            ('robot.svg', 160, 148),
+            ('logo.svg', 200, 85)
         ]
 
     def finalize_options(self):

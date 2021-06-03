@@ -1,15 +1,11 @@
 # Configuration Options
 
 * `REDIS_URL` - Required; URL to Redis instance used for key-value storage and cache
-* `POSTS_PER_PAGE` - Number of posts to display per page
-* `ARTISTS_PER_PAGE` - Number of items to display per page in artist-style listings
 * `SANITIZE_SUMMARY` - Boolean indicating whether or not some HTML tags should be stripped from post summaries (content is never sanitized beyond what Flask provides)
 * `STATION_NAME` - Name of the station
 * `STATION_SHORT_NAME` - Shorter name of the station (i.e. just the callsign)
 * `STATION_URL` - Website of the station
-* `NAV_TOP_SECTIONS` - List of dictionaries describing top-level nav items
 * `INTERNAL_IPS` - List of internal IP addresses that can access mission control
-* `TRACKMAN_URL` - URL to the root of a functional Trackman instance
 * `ADMINS` - List of email addresses that will receive error emails
 * `MAIL_FROM` - Email address used for sending email
 * `SMTP_SERVER` - SMTP server used for sending email

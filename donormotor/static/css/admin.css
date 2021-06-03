@@ -69,10 +69,6 @@ div.trackman-buttons {
             box-shadow: 0 1px 2px rgba(0,0,0,.05);
 }
 
-div.trackman-buttons {
-    max-width: 500px;
-}
-
 td.row-options {
     text-align: right;
 }
@@ -91,110 +87,6 @@ td.row-options {
     -webkit-column-count: 5;
        -moz-column-count: 5;
             column-count: 5;
-}
-
-.trackman-header form > button,
-.trackman-header .btn-group {
-    margin-left: 1em;
-}
-
-.trackman-dj-name {
-    max-width: 49%;
-    text-overflow: ellipsis;
-    overflow: hidden;
-}
-
-.trackman-metadata-reminder h4,
-.trackman-metadata-reminder p,
-.trackman-metadata-reminder ul.list-inline {
-    display: inline-block;
-}
-
-.trackman-metadata-reminder p {
-    margin-right: 5px;
-}
-
-.trackman-panel .table {
-    table-layout: fixed;
-}
-
-.trackman-panel .table th,
-.trackman-panel .table td {
-    overflow: hidden;
-}
-
-#trackman_playlist_panel .table th:nth-child(1),
-#trackman_playlist_panel .table td:nth-child(1) {
-    width: 5%;
-}
-
-#trackman_playlist_panel .table th:nth-child(2),
-#trackman_playlist_panel .table td:nth-child(2),
-#trackman_playlist_panel .table th:nth-child(3),
-#trackman_playlist_panel .table td:nth-child(3),
-#trackman_playlist_panel .table th:nth-child(4),
-#trackman_playlist_panel .table td:nth-child(4),
-#trackman_playlist_panel .table th:nth-child(5),
-#trackman_playlist_panel .table td:nth-child(5) {
-    width: 14%;
-}
-
-#trackman_playlist_panel .table th:nth-child(6),
-#trackman_playlist_panel .table td:nth-child(6),
-#trackman_playlist_panel .table th:nth-child(7),
-#trackman_playlist_panel .table td:nth-child(7),
-#trackman_playlist_panel .table th:nth-child(8),
-#trackman_playlist_panel .table td:nth-child(8) {
-    width: 5%;
-}
-
-#trackman_playlist_panel .table th:nth-child(9),
-#trackman_playlist_panel .table td:nth-child(9) {
-    width: 10%;
-}
-
-#trackman_queue_panel .table th:nth-child(1),
-#trackman_queue_panel .table td:nth-child(1),
-#trackman_search_panel .table th:nth-child(1),
-#trackman_search_panel .table td:nth-child(1) {
-    width: 16%;
-}
-
-#trackman_queue_panel .table th:nth-child(2),
-#trackman_queue_panel .table td:nth-child(2),
-#trackman_queue_panel .table th:nth-child(3),
-#trackman_queue_panel .table td:nth-child(3),
-#trackman_queue_panel .table th:nth-child(4),
-#trackman_queue_panel .table td:nth-child(4),
-#trackman_search_panel .table th:nth-child(2),
-#trackman_search_panel .table td:nth-child(2),
-#trackman_search_panel .table th:nth-child(3),
-#trackman_search_panel .table td:nth-child(3),
-#trackman_search_panel .table th:nth-child(4),
-#trackman_search_panel .table td:nth-child(4) {
-    width: 15%;
-}
-
-#trackman_queue_panel .table th:nth-child(5),
-#trackman_queue_panel .table td:nth-child(5),
-#trackman_queue_panel .table th:nth-child(6),
-#trackman_queue_panel .table td:nth-child(6),
-#trackman_queue_panel .table th:nth-child(7),
-#trackman_queue_panel .table td:nth-child(7),
-#trackman_search_panel .table th:nth-child(5),
-#trackman_search_panel .table td:nth-child(5),
-#trackman_search_panel .table th:nth-child(6),
-#trackman_search_panel .table td:nth-child(6),
-#trackman_search_panel .table th:nth-child(7),
-#trackman_search_panel .table td:nth-child(7) {
-    width: 5%;
-}
-
-#trackman_queue_panel .table th:nth-child(8),
-#trackman_queue_panel .table td:nth-child(8),
-#trackman_search_panel .table th:nth-child(8),
-#trackman_search_panel .table td:nth-child(8) {
-    width: 10%;
 }
 
 .row-table {
@@ -224,16 +116,4 @@ td.row-options {
 }
 .search-actions {
     min-width: 133px;
-}
-
-.trackman-entry {
-    margin-bottom: 20px;
-}
-
-.trackman-queue {
-    height: 200px;
-}
-
-.trackman-search-results {
-    height: 200px;
 }
