@@ -144,7 +144,7 @@ requests==2.22.0
     #   -r requirements.in
     #   loginpass
     #   stripe
-rsa==4.0
+rsa==4.7
     # via google-auth
 s3transfer==0.2.1
     # via boto3
@@ -173,7 +173,7 @@ unidecode==1.1.1
     # via -r requirements.in
 uritemplate==3.0.0
     # via google-api-python-client
-urllib3==1.25.8
+urllib3==1.26.5
     # via
     #   botocore
     #   requests
