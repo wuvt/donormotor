@@ -1,6 +1,6 @@
 # DonorMotor
 
-This is a stub repository for WUVT's donation management platform, to be spun out of
+This is WUVT's donation management platform, spun out of
 [wuvt/wuvt-site](https://github.com/wuvt/wuvt-site).
 
 Goals are to:
@@ -13,10 +13,6 @@ Further, this should provide an approachable framework for other stations lookin
 adopt a simple donation platform (as AudienceEngine has never materialised), without
 dragging in the relative bloat of wuvt-site (this is the same reason we spun out
 trackman).
-
-## TODO:
-
-- Prune non-donation code from wuvt-site to populate this repo
 
 ## About the Name
 
