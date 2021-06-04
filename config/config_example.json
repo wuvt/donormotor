@@ -3,7 +3,6 @@
   "AUTH_METHOD": "local",
   "AUTH_ROLE_GROUPS": {
     "admin": ["webmasters@wuvt.vt.edu"],
-    "content": ["webmasters@wuvt.vt.edu"],
     "business": ["business@wuvt.vt.edu"],
     "missioncontrol": ["missioncontrol@wuvt.vt.edu"]
   },
