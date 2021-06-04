@@ -1,0 +1,37 @@
+{% extends "admin/base.html" %}
+{% set page_title="Donation Reports" %}
+{% block nav_admin_reports%}<li class="active"><a href="{{ url_for('admin.donate_reports_and_stats') }}">Reports/Stats</a></li>{% endblock %}
+
+{% block content %}
+
+<div class="card panel panel-default">
+    <div class="card-body panel-body">
+        Total so far: {{ (total / 100)|format_currency }}<br>
+        Max donation: {{ (max / 100)|format_currency }}
+
+        <form method="post">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+            <button name="reset_stats" type="submit" class="btn btn-danger btn-sm" id="reset_donation_stats">
+                <span class="glyphicon glyphicon-dashboard"></span>
+                Reset Stats
+            </button>
+{% if last_stats_reset %}
+            <small>Last reset: {{ last_stats_reset|datetime }}</small>
+{% endif %}
+        </form>
+    </div>
+</div>
+
+<div class="card panel panel-default">
+    <div class="card-body panel-body">
+        <a href="{{ url_for('admin.donate_csv_download')}}">CSV Export</a>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+{{ super() }}
+<script src="{{ url_for('static', filename='js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/admin/donation_index.js') }}"></script>
+{% endblock %}

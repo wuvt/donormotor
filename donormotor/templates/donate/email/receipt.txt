@@ -1,0 +1,21 @@
+Hello {{ order.name }},
+
+We have received your payment of {{ (order.amount / 100)|format_currency }}.
+Thank you for your generous donation! If you'd like to support
+{{ config.STATION_NAME }} continuously, please consider setting up a recurring
+donation here: {{url_for('donate.donate_recurring', _external=True)}}
+
+{% if ack_email_body != '' %}
+{{ ack_email_body }}
+{% else %}
+If you ordered premiums for Radiothon, please check our website for more 
+information, but they are usually available for pickup or shipped out within 4-6
+weeks.
+
+If you have any questions or concerns, please feel free to contact us by
+replying to this email.
+{% endif %}
+
+Thanks again,
+
+{{ config.STATION_NAME }}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Forbidden - {{ super() }}{% endblock %}
+{% block content %}
+
+<section>
+    <header>
+        <h2>Forbidden</h2>
+    </header>
+
+    <p>Sorry, you don't have permission to access the requested resource
+    because your IP address is not on the allowlist. If you're in the
+    station, please disconnect from wifi and use the wired network.</p>
+
+    <p>Your attempt to access this protected resource has been logged.</p>
+</section>
+{% endblock %}

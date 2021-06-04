@@ -1,0 +1,256 @@
+{% extends "donate/missioncontrol/base.html" %}
+{% block nav_missioncontrol_index %}<li class="active"><a href="{{ url_for('donate.missioncontrol_index') }}">Home</a></li>{% endblock %}
+
+{% block content %}
+<div class="col-md-6">
+<h2>Take a Pledge</h2>
+
+<form action="{{ url_for('donate.missioncontrol_process') }}" method="post"
+        id="donate_form" class="form-horizontal">
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}" />
+    <input type="hidden" name="stripe_token" id="id_stripe_token" value="" />
+
+    <div class="form-group">
+        <label for="id_name" class="col-sm-3 control-label">Donor Name</label>
+        <div class="col-sm-9">
+            <input type="text" name="name" id="id_name" value=""
+                class="form-control" required="required" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="id_amount" class="col-sm-3 control-label">Pledge Amount</label>
+        <div class="col-sm-9">
+            <div class="input-group">
+                <span class="input-group-addon">$</span>
+                <input type="text" inputmode="numeric" name="amount"
+                    id="id_amount" pattern="\d+(\.\d{2})?" placeholder="35.00"
+                    class="form-control" />
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="id_plan" class="col-sm-3 control-label">or Monthly Plan</label>
+        <div class="col-sm-9">
+            <select name="plan" id="id_plan" class="form-control">
+                <option value="">One-time donation</option>
+                {% for plan in plans %}
+                <option value="{{ plan.id }}" data-amount="{{ plan.amount }}">{{ plan.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="id_email" class="col-sm-3 control-label">Email Address</label>
+        <div class="col-sm-9">
+            <input type="email" name="email" id="id_email" value=""
+                placeholder="you@example.com" class="form-control" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="id_phone" class="col-sm-3 control-label">Phone Number</label>
+        <div class="col-sm-9">
+            <input type="tel" name="phone" id="id_phone" value=""
+                pattern="\d{3}\-\d{3}\-\d{4}" placeholder="540-555-5555"
+                class="form-control" />
+        </div>
+    </div>
+ 
+    <div class="form-group">
+        <label for="id_show" class="col-sm-3 control-label">Show to Credit</label>
+        <div class="col-sm-9">
+            <input type="text" name="show" id="id_show" value=""
+                class="form-control" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="id_comment" class="col-sm-3 control-label">Comment</label>
+        <div class="col-sm-9">
+            <input type="text" name="comment" id="id_comment" value=""
+                class="form-control" />
+        </div>
+    </div>
+
+
+{% if premiums_config.enabled %}
+    <div class="form-group">
+        <label class="col-sm-3 control-label">Would they like any premiums?</label>
+
+        <div class="col-sm-9">
+            <div class="radio">
+                <input type="radio" name="premiums" id="id_premiums_no"
+                    value="no" checked="checked" />
+                <label for="id_premiums_no">No, they want their entire donation to go towards WUVT</label>
+            </div>
+
+            <div class="radio">
+                <input type="radio" name="premiums" id="id_premiums_pickup"
+                    value="pickup" />
+                <label for="id_premiums_pickup">Yes, they'll pick them up in 350 Squires Student Center</label>
+            </div>
+
+            <div class="radio">
+                <input type="radio" name="premiums" id="id_premiums_ship"
+                    value="ship" />
+                <label for="id_premiums_ship">Yes, ship their premiums to them (+${{ premiums_config.shipping_cost // 100 }}, US only)</label>
+            </div>
+        </div>
+    </div>
+
+{% if premiums_config.premiums.tshirt %}
+    <div id="premium_fields">
+        <div class="form-group">
+            <label for="id_tshirtsize" class="col-sm-3 control-label">{{ premiums_config.premiums.tshirt.display }} Size</label>
+            <div class="col-sm-9">
+                <select id="id_tshirtsize" name="tshirtsize"
+                        class="form-control">
+                    {% for size in premiums_config.premiums.tshirt.sizes %}
+                    <option value="{{ size }}">{{ size }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+{% if premiums_config.premiums.tshirt.colors|length > 0 %}
+        <div class="form-group">
+            <label for="id_tshirtcolor" class="col-sm-3 control-label">{{ premiums_config.premiums.tshirt.display }} Color</label>
+            <div class="col-sm-9">
+                <select id="id_tshirtcolor" name="tshirtcolor"
+                        class="form-control">
+                    {% for color in premiums_config.premiums.tshirt.colors %}
+                    <option value="{{ color }}">{{ color }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+{% endif %}
+{% endif %}
+
+{% if premiums_config.premiums.sweatshirt %}
+        <div class="form-group">
+            <label for="id_sweatshirtsize" class="col-sm-3 control-label">{{ premiums_config.premiums.sweatshirt.display }} Size</label>
+            <div class="col-sm-9">
+                <select id="id_sweatshirtsize" name="sweatshirtsize"
+                        class="form-control">
+                    {% for size in premiums_config.premiums.sweatshirt.sizes %}
+                    <option value="{{ size }}">{{ size }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+{% endif %}
+    </div>
+
+    <div id="shipping_fields">
+        <div class="form-group">
+            <label for="id_address_1" class="col-sm-3 control-label">Address</label>
+            <div class="col-sm-9">
+                <input type="text" name="address_1" id="id_address_1" value=""
+                    class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="id_address_2" class="col-sm-3 control-label">Address 2</label>
+            <div class="col-sm-9">
+                <input type="text" name="address_2" id="id_address_2" value=""
+                    class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="id_city" class="col-sm-3 control-label">City</label>
+            <div class="col-sm-9">
+                <input type="text" name="city" id="id_city" value=""
+                    class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="id_state" class="col-sm-3 control-label">State</label>
+            <div class="col-sm-9">
+                <input type="text" name="state" id="id_state" value=""
+                    class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="id_zipcode" class="col-sm-3 control-label">ZIP Code</label>
+            <div class="col-sm-9">
+                <input type="text" inputmode="numeric" name="zipcode"
+                    id="id_zipcode" value="" class="form-control"
+                    pattern="\d{5}" />
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+    <div class="form-group">
+        <label for="id_onair" class="col-sm-3 control-label">May we thank them publicly?</label>
+        <div class="col-sm-9">
+            <select name="onair" id="id_onair" class="form-control">
+                <option value="y">Yes</option>
+                <option value="n">No</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="id_firsttime" class="col-sm-3 control-label">Is this their first time contributing?</label>
+        <div class="col-sm-9">
+            <select name="firsttime" id="id_firsttime" class="form-control">
+                <option value="y">Yes</option>
+                <option value="n" selected="selected">No</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="id_method" class="col-sm-3 control-label">Payment Method</label>
+
+        <div class="col-sm-9">
+            <select name="method" id="id_method" class="form-control">
+                <option value="stripe_missioncontrol">Credit Card</option>
+                <option value="later">Pay Later</option>
+            </select>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Process Pledge</button>
+</form>
+</div>
+
+<div class="col-md-6">
+<h2>Recent Pledges</h2>
+
+<table class="table table-striped table-hover">
+    <tr>
+        <th>Time</th>
+        <th>Donor</th>
+        <th>Show to Credit</th>
+        <th>First Time?</th>
+        <th>Amount</th>
+    </tr>
+
+    {% for order in orders -%}
+    <tr>
+        <td>{{ order.placed_date|datetime("%H:%M") }}</td>
+        <td>{% if order.thank_on_air %}{{ order.name }}{% else %}<em>Anonymous Donor</em>{% endif %}</td>
+        <td>{{ order.dj }}</td>
+        <td>{% if order.first_time %}Yes{% else %}No{% endif %}</td>
+        <td>{{ (order.amount / 100)|format_currency }}</td>
+    </tr>
+    {% endfor -%}
+</table>
+</div>
+{% endblock %}
+{% block js %}
+{{ super() }}
+<script src="{{ url_for('static', filename='js/donate.js') }}"></script>
+<script src="https://checkout.stripe.com/checkout.js"></script>
+<script src="{{ url_for('donate.missioncontrol_donate_js', v=2) }}"></script>
+{% endblock %}
