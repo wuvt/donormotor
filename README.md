@@ -77,5 +77,10 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ```
+The following files are JavaScript libraries and CSS files, freely available
+under the MIT license as noted in their headers:
 
-At present, there are no exceptions
+- donormotor/static/js/jquery.js
+- donormotor/static/js/jquery.dataTables.min.js
+- donormotor/static/js/moment.min.js
+- donormotor/static/bootstrap/*
