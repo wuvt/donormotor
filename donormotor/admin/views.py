@@ -7,10 +7,11 @@ from flask import abort, flash, jsonify, make_response, render_template, \
 from werkzeug.utils import secure_filename
 
 from donormotor import app, auth_manager, cache, db, redis_conn
-from donormotor.auth import current_user, login_required
 from donormotor.admin import bp
-from donormotor.auth.models import User
 from donormotor.admin.auth import views as auth_views  # noqa: F401
+from donormotor.admin.view_utils import donation_stats
+from donormotor.auth import current_user, login_required
+from donormotor.auth.models import User
 from donormotor.donate.models import Order
 import csv
 import io
@@ -91,34 +92,17 @@ def donation_index():
 
         return redirect(url_for('.donation_index'))
 
-    stats = Order.query.with_entities(
-        db.func.sum(Order.amount).label('total_paid'),
-        db.func.max(Order.amount).label('max_paid'))
+    startdate = redis_conn.get('donation_stats_start')
 
-    donation_stats_start = redis_conn.get('donation_stats_start')
-    if donation_stats_start is not None:
-        last_stats_reset = dateutil.parser.parse(donation_stats_start)
-        stats = stats.filter(Order.placed_date > last_stats_reset)
-    else:
-        last_stats_reset = None
-
-    stats = stats.all()
-
-    total = stats[0][0]
-    if total is None:
-        total = 0
-
-    max_donation = stats[0][1]
-    if max_donation is None:
-        max_donation = 0
-
+    stats = donation_stats(startdate)
+    
     donations = Order.query.all()
 
     return render_template('admin/donation_index.html',
                            donations=donations,
-                           total=total,
-                           max=max_donation,
-                           last_stats_reset=last_stats_reset)
+                           total=stats['total'],
+                           max=stats['max_donation'],
+                           last_stats_reset=stats['last_stats_reset'])
 
 @bp.route('/reports', methods=['GET', 'POST'])
 @auth_manager.check_access('business')
@@ -130,31 +114,14 @@ def donate_reports_and_stats():
                            datetime.datetime.utcnow().isoformat())
         return redirect(url_for('.donate_reports_and_stats'))
 
-    stats = Order.query.with_entities(
-        db.func.sum(Order.amount).label('total_paid'),
-        db.func.max(Order.amount).label('max_paid'))
+    startdate = redis_conn.get('donation_stats_start')
 
-    donation_stats_start = redis_conn.get('donation_stats_start')
-    if donation_stats_start is not None:
-        last_stats_reset = dateutil.parser.parse(donation_stats_start)
-        stats = stats.filter(Order.placed_date > last_stats_reset)
-    else:
-        last_stats_reset = None
-
-    stats = stats.all()
-
-    total = stats[0][0]
-    if total is None:
-        total = 0
-
-    max_donation = stats[0][1]
-    if max_donation is None:
-        max_donation = 0
+    stats = donation_stats(startdate)
 
     return render_template('admin/reports.html',
-                           total=total,
-                           max=max_donation,
-                           last_stats_reset=last_stats_reset)
+                           total=stats['total'],
+                           max=stats['max_donation'],
+                           last_stats_reset=stats['last_stats_reset'])
 
 @bp.route('/donate/csv')
 @auth_manager.check_access('business')
