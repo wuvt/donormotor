@@ -9,6 +9,7 @@ from donormotor.donate import get_plan, list_plans, mail, process_stripe_onetime
 from donormotor.donate.models import Order
 from donormotor.donate.view_utils import load_premiums_config
 from donormotor.view_utils import local_only
+from donormotor.admin.view_utils import donation_stats
 
 
 @bp.route('/onetime')
