@@ -4,7 +4,7 @@ import dateutil.parser
 import os
 from flask import abort, flash, jsonify, make_response, render_template, \
         redirect, request, url_for, json
-from werkzeug import secure_filename
+from werkzeug.utils import secure_filename
 
 from donormotor import app, auth_manager, cache, db, redis_conn
 from donormotor.admin import bp
