@@ -4,7 +4,7 @@ from flask import Flask, Request
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
-from werkzeug.contrib.cache import RedisCache
+from cachelib import RedisCache
 import humanize
 import os
 import redis
@@ -101,7 +101,7 @@ app.jinja_env.filters.update({
 app.static_folder = 'static'
 
 if app.config['PROXY_FIX']:
-    from werkzeug.contrib.fixers import ProxyFix
+    from werkzeug.middleware.proxy_fix import ProxyFix
     app.wsgi_app = ProxyFix(app.wsgi_app,
                             num_proxies=app.config['PROXY_FIX_NUM_PROXIES'])
 
