@@ -3,7 +3,7 @@ import dateutil.parser
 from donormotor import db
 from donormotor.donate.models import Order
 
-def donation_stats(startdate)
+def donation_stats(startdate):
     stats = Order.query.with_entities(
         db.func.sum(Order.amount).label('total_paid'),
         db.func.max(Order.amount).label('max_paid'))
