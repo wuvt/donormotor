@@ -29,3 +29,5 @@ sqlalchemy>=1.2.0
 SQLAlchemy-Utils
 stripe<=1.79.1
 Unidecode
+cachelib
+email-validator
