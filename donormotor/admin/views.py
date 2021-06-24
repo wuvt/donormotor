@@ -6,12 +6,13 @@ from flask import abort, flash, jsonify, make_response, render_template, \
         redirect, request, url_for, json
 from werkzeug.utils import secure_filename
 
-from donormotor import app, auth_manager, cache, db, redis_conn
+from donormotor import app, auth_manager, cache, redis_conn
 from donormotor.admin import bp
 from donormotor.admin.auth import views as auth_views  # noqa: F401
 from donormotor.admin.view_utils import donation_stats
 from donormotor.auth import current_user, login_required
 from donormotor.auth.models import User
+from donormotor.db import db
 from donormotor.donate.models import Order
 import csv
 import io

@@ -1,5 +1,5 @@
 import datetime
-from donormotor import db
+from donormotor.db import db
 
 
 class Order(db.Model):

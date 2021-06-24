@@ -1,6 +1,6 @@
 import datetime
 import dateutil.parser
-from donormotor import db
+from donormotor.db import db
 from donormotor.donate.models import Order
 
 def donation_stats(startdate):
