@@ -2,14 +2,15 @@ import datetime
 from flask import flash, make_response, redirect, render_template, request, \
         url_for, Response
 from donormotor import app
-from donormotor import db, redis_conn
+from donormotor import redis_conn
+from donormotor.db import db
 from donormotor.donate import bp
 from donormotor.donate import get_plan, list_plans, mail, process_stripe_onetime, \
         process_stripe_recurring
 from donormotor.donate.models import Order
 from donormotor.donate.view_utils import load_premiums_config
 from donormotor.view_utils import local_only
-#from donormotor.admin.view_utils import donation_stats
+from donormotor.admin.view_utils import donation_stats
 
 
 @bp.route('/onetime')

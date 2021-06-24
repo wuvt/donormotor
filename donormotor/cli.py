@@ -2,7 +2,8 @@ import click
 import os
 import random
 import string
-from donormotor import app, db
+from donormotor import app
+from donormotor.db import db
 from donormotor.auth.models import User
 import donormotor.donate.models
 

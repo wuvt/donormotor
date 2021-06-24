@@ -1,4 +1,4 @@
-from donormotor import db
+from donormotor.db import db
 from donormotor.auth.models import User
 
 
