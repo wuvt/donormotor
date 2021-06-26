@@ -64,6 +64,3 @@ def process_stripe_recurring(order, stripe_token, plan, shipping_cost=0):
     cust.subscriptions.create(plan=plan)
 
     return True
-
-
-from . import views
