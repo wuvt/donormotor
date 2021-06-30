@@ -225,6 +225,33 @@
 </div>
 
 <div class="col-md-6">
+<div class="card panel panel-default">
+    <div class="card-body panel-body">
+        Total so far: {{ (global_stats['total'] / 100)|format_currency }}<br>
+        Max donation: {{ (global_stats['max_donation'] / 100)|format_currency }}
+    </div>
+</div>
+<div class="card panel panel-default">
+    <div class="card-body panel-body">
+        Total so far: {{ (mcstats['total'] / 100)|format_currency }}<br>
+        Max donation: {{ (mcstats['max_donation'] / 100)|format_currency }}
+
+        <form method="post">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+            <button name="reset_stats" type="submit" class="btn btn-danger btn-sm" id="reset_donation_stats">
+                <span class="glyphicon glyphicon-dashboard"></span>
+                Reset Stats
+            </button>
+{% if last_stats_reset %}
+            <small>Last reset: {{ last_stats_reset|datetime }}</small>
+{% endif %}
+        </form>
+    </div>
+</div>
+
+
+</div>
+<div class="col-md-6">
 <h2>Recent Pledges</h2>
 
 <table class="table table-striped table-hover">
