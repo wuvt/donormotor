@@ -174,11 +174,15 @@ def thanks():
 @local_only
 def missioncontrol_index():
     cutoff = datetime.datetime.utcnow() - datetime.timedelta(hours=12)
+    global_stats = donation_stats(redis_conn.get('donation_stats_start'))
+    mcstats = donation_stats(cutoff)
     orders = Order.query.\
         filter(Order.placed_date > cutoff).\
         order_by(db.desc(Order.id)).limit(app.config['ARTISTS_PER_PAGE'])
     return render_template('donate/missioncontrol/index.html',
                            plans=list_plans(), orders=orders,
+                           global_stats=global_stats,
+                           mcstats=mcstats,
                            premiums_config=load_premiums_config())
 
 

@@ -10,7 +10,10 @@ def donation_stats(startdate):
 
     donation_stats_start = startdate
     if donation_stats_start is not None:
-        last_stats_reset = dateutil.parser.parse(donation_stats_start)
+        if type(donation_stats_start) == datetime.datetime:
+            last_stats_reset = donation_stats_start
+        else:
+            last_stats_reset = dateutil.parser.parse(donation_stats_start)
         stats = stats.filter(Order.placed_date > last_stats_reset)
     else:
         last_stats_reset = None
