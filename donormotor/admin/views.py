@@ -190,18 +190,33 @@ def donate_csv_download():
 @auth_manager.check_access('business')
 def premium_config():
     #TODO add form handling for this, store config in redis?
+    default_premiums = b'{"enabled":true,"premiums":{"sweatshirt":{"display":"Sweatshirt","sizes":["None","S","M","L","XL","XXL"]},"tshirt":{"display":"T-Shirt","sizes":["None","S","M","L","XL","XXL"]}},"shipping_cost":600,"shipping_minimum":2000}'
     if request.method == 'GET':
+        try:
+            radiothon = redis_conn.get('radiothon').decode()
+        except:
+            radiothon = "false"
+            redis_conn.set('radiothon', b"false")
+        try:
+            premiums = json.loads(redis_conn.get('donate_premiums_config'))
+        except:
+            premiums = default_premiums.decode()
+            redis_conn.set('donate_premiums_config', default_premiums)
+        try:
+            ack_email=redis_conn.get('ack_email').decode()
+        except:
+            ack_email=""
         return render_template('admin/premium_config.html',
-                radiothon=redis_conn.get('radiothon').decode(),
-                premiums=json.loads(redis_conn.get('donate_premiums_config')),
-                ack_email=redis_conn.get('ack_email').decode())
+                radiothon=radiothon,
+                premiums=premiums,
+                ack_email=ack_email)
     if request.method == 'POST':
         if 'enable_radiothon' in request.form:
             redis_conn.set('radiothon', b"true")
         elif 'disable_radiothon' in request.form:
             redis_conn.set('radiothon', b"false")
         if 'default_premiums' in request.form:
-            p = b'{"enabled":true,"premiums":{"sweatshirt":{"display":"Sweatshirt","sizes":["None","S","M","L","XL","XXL"]},"tshirt":{"display":"T-Shirt","sizes":["None","S","M","L","XL","XXL"]}},"shipping_cost":600,"shipping_minimum":2000}'
+            p = default_premiums
             redis_conn.set('donate_premiums_config', p)
         elif 'premiums' in request.form:
             p = json.dumps(request.form['premiums'])
