@@ -189,9 +189,6 @@ def init_app():
     from donormotor import donate
     app.register_blueprint(donate.bp, url_prefix='/donate')
 
-    from donormotor import api
-    app.register_blueprint(api.bp, url_prefix='/api')
-
     from donormotor import cli
     from donormotor import views
 
