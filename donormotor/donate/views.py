@@ -1,4 +1,5 @@
 import datetime
+import dateutil.parser
 from flask import flash, make_response, redirect, render_template, request, \
         url_for, Response
 from donormotor import app
@@ -170,11 +171,19 @@ def thanks():
     return render_template('donate/thanks.html')
 
 
-@bp.route('/missioncontrol')
+@bp.route('/missioncontrol', methods=['GET', 'POST'])
 @local_only
 def missioncontrol_index():
-    cutoff = datetime.datetime.utcnow() - datetime.timedelta(hours=12)
+
+    if request.method == 'POST':
+        if 'reset_stats' in request.form:
+            redis_conn.set('donation_mcstats_start',
+                            datetime.datetime.utcnow().isoformat())
     global_stats = donation_stats(redis_conn.get('donation_stats_start'))
+    try:
+        cutoff = dateutil.parser.parse(redis_conn.get('donation_mcstats_start'))
+    except:
+        cutoff = datetime.datetime.utcnow() - datetime.timedelta(hours=12)
     mcstats = donation_stats(cutoff)
     orders = Order.query.\
         filter(Order.placed_date > cutoff).\
@@ -183,6 +192,7 @@ def missioncontrol_index():
                            plans=list_plans(), orders=orders,
                            global_stats=global_stats,
                            mcstats=mcstats,
+                           last_stats_reset = mcstats['last_stats_reset'],
                            premiums_config=load_premiums_config())
 
 
