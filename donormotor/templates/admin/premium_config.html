@@ -38,7 +38,7 @@
         <form method="post">
             <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
             <label for="ack_email">Acknowlegement Email:</label></br>
-	    <input type=email id="ack_email" name="ack_email" value="{{ ack_email }}" /><br>
+	    <input type="email" id="ack_email" name="ack_email" value="{{ ack_email }}" /><br>
             <div class="btn-group btn-group-sm">
                 <button name="update_ack_email" type="submit" class="btn btn-sm">Update</button>
                 <button name="default_ack_email" type="submit" class="btn btn-sm btn-danger">Reset</button>
