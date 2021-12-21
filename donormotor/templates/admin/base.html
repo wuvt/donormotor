@@ -16,36 +16,35 @@
     </head>
     <body{% block bodyattrib %}{% endblock %}>
         {% block header %}
-        <nav class="navbar navbar-default">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#admin-top-navbar" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
+        <nav class="navbar navbar-light navbar-expand-lg bg-light">
+            <div class="container-fluid">
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-target="#admin-top-navbar" aria-expanded="false">
+                    <span class="navbar-toggler-icon">Toggle navigation</span>
                 </button>
                 <a class="navbar-brand" href="{{ url_for('admin.index') }}">WUVT Admin</a>
-            </div>
-            <div class="collapse navbar-collapse" id="admin-top-navbar">
-                <ul class="nav navbar-nav">
-                    {% block nav_admin_index %}<li><a href="{{ url_for('admin.index') }}">Home</a></li>{% endblock %}
-                    {% if 'admin' in current_user_roles or 'content' in current_user_roles %}{% block nav_admin_upload %}<li><a href="{{ url_for('admin.upload') }}">Upload</a></li>{% endblock %}{% endif %}
-                    {% if 'admin' in current_user_roles or config.AUTH_METHOD == "local" %}{% block nav_admin_users %}<li><a href="{{ url_for('admin.users') }}">Users</a></li>{% endblock %}{% endif %}
-                    {% if 'admin' in current_user_roles %}{% block nav_admin_roles %}<li><a href="{{ url_for('admin.roles') }}">Roles</a></li>{% endblock %}{% endif %}
-                    {% if 'admin' in current_user_roles %}{% block nav_admin_config %}<li><a href="{{ url_for('admin.premium_config') }}">Configure</a></li>{% endblock %}{% endif %}
-                    {% if 'business' in current_user_roles %}{% block nav_admin_reports%}<li><a href="{{ url_for('admin.donate_reports_and_stats') }}">Reports/Stats</a></li>{% endblock %}{% endif %}
-                    {% if 'business' in current_user_roles %}{% block nav_admin_donation %}<li><a href="{{ url_for('admin.donation_index') }}">Donations</a></li>{% endblock %}{% endif %}
-                </ul>
-                <form action="{{ url_for('auth.logout') }}" method="post" class="navbar-form navbar-right">
-                    <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}" />
-                    <button type="submit" class="btn btn-default">
-                        <span class="glyphicon glyphicon-log-out"></span>
-                        Logout
-                    </button>
-                </form>
-                <p class="navbar-text navbar-right">
-                    Logged in as {{ current_user.name }}
-                </p>
+                <div class="d-flex collapse navbar-collapse" id="admin-top-navbar">
+                    <ul class="nav navbar-nav nav-tabs me-auto">
+                        {% block nav_admin_index %}<li class="nav-item"><a class="nav-link" href="{{ url_for('admin.index') }}">Home</a></li>{% endblock %}
+                        {% if 'admin' in current_user_roles or 'content' in current_user_roles %}{% block nav_admin_upload %}<li class="nav-item"><a class="nav-link" href="{{ url_for('admin.upload') }}">Upload</a></li>{% endblock %}{% endif %}
+                        {% if 'admin' in current_user_roles or config.AUTH_METHOD == "local" %}{% block nav_admin_users %}<li class="nav-item"><a class="nav-link" href="{{ url_for('admin.users') }}">Users</a></li>{% endblock %}{% endif %}
+                        {% if 'admin' in current_user_roles %}{% block nav_admin_roles %}<li class="nav-item"><a class="nav-link" href="{{ url_for('admin.roles') }}">Roles</a></li>{% endblock %}{% endif %}
+                        {% if 'admin' in current_user_roles %}{% block nav_admin_config %}<li class="nav-item"><a class="nav-link" href="{{ url_for('admin.premium_config') }}">Configure</a></li>{% endblock %}{% endif %}
+                        {% if 'business' in current_user_roles %}{% block nav_admin_reports%}<li class="nav-item"><a class="nav-link" href="{{ url_for('admin.donate_reports_and_stats') }}">Reports/Stats</a></li>{% endblock %}{% endif %}
+                        {% if 'business' in current_user_roles %}{% block nav_admin_donation %}<li class="nav-item"><a class="nav-link" href="{{ url_for('admin.donation_index') }}">Donations</a></li>{% endblock %}{% endif %}
+                    </ul>
+                    <div class="d-flex ms-auto">
+                        <form action="{{ url_for('auth.logout') }}" method="post">
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}" />
+                            <button type="submit" class="btn btn-secondary">
+                                <span class="glyphicon glyphicon-log-out"></span>
+                                Logout
+                            </button>
+                        </form>
+                        <span class="navbar-text mx-3">
+                            Logged in as {{ current_user.name }}
+                        </span>
+                    </div>
+                </div>
             </div>
         </nav>
         {% endblock %}

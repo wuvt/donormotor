@@ -1,6 +1,6 @@
 {% extends "admin/base.html" %}
 {% set page_title="Users" %}
-{% block nav_admin_users %}<li class="active"><a href="{{ url_for('admin.users') }}">Users</a></li>{% endblock %}
+{% block nav_admin_users %}<li class="nav-item"><a class="nav-link active" href="{{ url_for('admin.users') }}">Users</a></li>{% endblock %}
 
 {% block content %}
 <h1>Users</h1>
@@ -28,7 +28,7 @@
         <td>{{ user.enabled }}</td>
         <td class="row-options">
 {% if config.AUTH_METHOD == "local" %}
-            <a href="{{ url_for('admin.user_edit', id=user.id) }}" class="btn btn-default btn-sm">Edit</a>
+            <a href="{{ url_for('admin.user_edit', id=user.id) }}" class="btn btn-secondary btn-sm">Edit</a>
 {% endif %}
         </td>
     </tr>

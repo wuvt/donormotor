@@ -1,13 +1,13 @@
 {% extends "admin/base.html" %}
 {% set page_title="Donations" %}
-{% block nav_admin_donation%}<li class="active"><a href="{{ url_for('admin.donation_index') }}">Donations</a></li>{% endblock %}
+{% block nav_admin_donation%}<li class="nav-item active"><a class="nav-link active" href="{{ url_for('admin.donation_index') }}">Donations</a></li>{% endblock %}
 
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jquery.dataTables.min.css') }}" />
 <h1>Donations</h1>
 
-<div class="panel panel-default">
-    <div class="panel-body">
+<div class="card panel panel-default">
+    <div class="card-body panel-body">
         Total so far: {{ (total / 100)|format_currency }}<br>
         Max donation: {{ (max / 100)|format_currency }}
 

@@ -1,5 +1,5 @@
 {% extends "admin/base.html" %}
-{% block nav_admin_index %}<li class="active"><a href="{{ url_for('admin.index') }}">Home</a></li>{% endblock %}
+{% block nav_admin_index %}<li class="nav-item"><a class="nav-link active" href="{{ url_for('admin.index') }}">Home</a></li>{% endblock %}
 
 {% block content %}
 <h1>{{ config.STATION_NAME }}</h1>
