@@ -1,6 +1,6 @@
 {% extends "admin/base.html" %}
 {% set page_title="Add User Role " %}
-{% block nav_admin_roles %}<li class="active"><a href="{{ url_for('admin.roles') }}">Roles</a></li>{% endblock %}
+{% block nav_admin_roles %}<li class="nav-item"><a class="nav-link active" href="{{ url_for('admin.roles') }}">Roles</a></li>{% endblock %}
 
 {% block content %}
 <h1>Add User Role</h1>
@@ -35,7 +35,7 @@
             Add User Role
         </button>
 
-        <a href="{{ url_for('admin.roles') }}" class="btn btn-default">
+        <a href="{{ url_for('admin.roles') }}" class="btn btn-secondary">
             <span class="glyphicon glyphicon-remove"></span>
             Cancel
         </a>

@@ -16,20 +16,17 @@
     </head>
     <body{% block bodyattrib %}{% endblock %}>
         {% block header %}
-        <nav class="navbar navbar-default">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#missioncontrol-top-navbar" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
+        <nav class="navbar navbar-light navbar-expand-lg bg-light">
+            <div class="container-fluid">
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-target="#admin-top-navbar" aria-expanded="false">
+                    <span class="navbar-toggler-icon">Toggle navigation</span>
                 </button>
                 <a class="navbar-brand" href="{{ url_for('donate.missioncontrol_index') }}">WUVT Mission Control</a>
-            </div>
-            <div class="collapse navbar-collapse" id="missioncontrol-top-navbar">
-                <ul class="nav navbar-nav">
-                    {% block nav_missioncontrol_index %}<li><a href="{{ url_for('donate.missioncontrol_index') }}">Home</a></li>{% endblock %}
-                </ul>
+                <div class="collapse navbar-collapse" id="missioncontrol-top-navbar">
+                    <ul class="nav navbar-nav me-auto">
+                        {% block nav_missioncontrol_index %}<li class="nav-item"><a class="nav-link" href="{{ url_for('donate.missioncontrol_index') }}">Home</a></li>{% endblock %}
+                    </ul>
+                </div>
             </div>
         </nav>
         {% endblock %}

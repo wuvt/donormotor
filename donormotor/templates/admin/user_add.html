@@ -1,6 +1,6 @@
 {% extends "admin/base.html" %}
 {% set page_title="Create User " %}
-{% block nav_admin_users %}<li class="active"><a href="{{ url_for('admin.users') }}">Users</a></li>{% endblock %}
+{% block nav_admin_users %}<li class="nav-item"><a class="nav-link active" href="{{ url_for('admin.users') }}">Users</a></li>{% endblock %}
 
 {% block content %}
 <h1>Create User</h1>
@@ -62,7 +62,7 @@
             Create User
         </button>
 
-        <a href="{{ url_for('admin.users') }}" class="btn btn-default">
+        <a href="{{ url_for('admin.users') }}" class="btn btn-secondary">
             <span class="glyphicon glyphicon-remove"></span>
             Cancel
         </a>
