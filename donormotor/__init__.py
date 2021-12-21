@@ -1,14 +1,13 @@
 import dateutil.parser
 from dateutil import tz
 from flask import Flask, Request
-from flask_migrate import Migrate
-from flask_sqlalchemy import SQLAlchemy
 from flask_wtf.csrf import CSRFProtect
 from cachelib import RedisCache
 import humanize
 import os
 import redis
 from . import defaults
+from .db import db, migrate
 import uuid
 import datetime
 import sentry_sdk
@@ -110,10 +109,11 @@ if app.config['PROXY_FIX']:
 
 redis_conn = redis.from_url(app.config['REDIS_URL'])
 
+db.init_app(app)
+migrate.init_app(app, db)
+
 cache = RedisCache(host=redis_conn)
 csrf = CSRFProtect(app)
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
 
 from donormotor.auth import AuthManager, current_user
 auth_manager = AuthManager()
@@ -187,6 +187,7 @@ def init_app():
     app.register_blueprint(admin.bp, url_prefix='/admin')
 
     from donormotor import donate
+    from donormotor.donate import views as donate_views
     app.register_blueprint(donate.bp, url_prefix='/donate')
 
     from donormotor import api

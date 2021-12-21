@@ -9,7 +9,7 @@ jobs:
     - name: Publish to GitHub Package Registry
       uses: elgohr/Publish-Docker-Github-Action@master
       with:
-        name: wuvt/wuvt-site
+        name: wuvt/donormotor
         username: wuvt
         password: ${{ secrets.GITHUB_TOKEN }}
         registry: ghcr.io

@@ -1,6 +1,6 @@
 import datetime
 from donormotor import app
-from donormotor import db
+from donormotor.db import db
 from passlib.hash import django_pbkdf2_sha256
 from .mixins import UserMixin
 
