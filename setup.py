@@ -58,7 +58,6 @@ setup(
         "humanize",
         "Markdown",
         "musicbrainzngs",
-        "netaddr",
         "passlib",
         "psycopg2",
         "pyasn1",
