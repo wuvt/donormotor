@@ -12,7 +12,6 @@ google-api-python-client
 humanize
 loginpass
 Markdown
-netaddr
 passlib
 psycopg2
 pyasn1

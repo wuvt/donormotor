@@ -1,7 +1,7 @@
 from flask import abort, request, Response
 from functools import wraps
 from donormotor import app
-import netaddr
+import ipaddress
 import re
 import socket
 import unidecode
@@ -18,11 +18,13 @@ class IPAccessDeniedException(Exception):
 def local_only(f):
     @wraps(f)
     def local_wrapper(*args, **kwargs):
-        if request.remote_addr not in \
-                netaddr.IPSet(app.config['INTERNAL_IPS']):
-            raise IPAccessDeniedException()
-        else:
-            return f(*args, **kwargs)
+        l = []
+        for i in app.config['INTERNAL_IPS']:
+            l.append(ipaddress.ip_network(i))
+        for i in l:
+            if ipaddress.ip_address(request.remote_addr) in i:
+                return f(*args, **kwargs)
+        raise IPAccessDeniedException()
     return local_wrapper
 
 
