@@ -174,7 +174,6 @@ def thanks():
 @bp.route('/missioncontrol', methods=['GET', 'POST'])
 @local_only
 def missioncontrol_index():
-
     if request.method == 'POST':
         if 'reset_stats' in request.form:
             redis_conn.set('donation_mcstats_start',
