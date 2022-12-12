@@ -1,4 +1,4 @@
-FROM python:3.9.5
+FROM python:3.11.1
 
 RUN apt-get update && apt-get install -y \
             git \
