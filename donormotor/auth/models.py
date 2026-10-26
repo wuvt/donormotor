@@ -20,7 +20,7 @@ class User(db.Model, UserMixin):
         self.email = email
 
     def set_password(self, password):
-        self.pw_hash = django_pbkdf2_sha256.encrypt(password)
+        self.pw_hash = django_pbkdf2_sha256.hash(password)
 
     def check_password(self, password):
         if len(password) >= app.config['MIN_PASSWORD_LENGTH']:

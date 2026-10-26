@@ -71,7 +71,7 @@ def donation_index():
                            datetime.datetime.utcnow().isoformat())
         if 'set_paid' in request.form:
             # TODO log who set as paid
-            o = Order.query.get(request.form["id"])
+            o = db.get_or_404(Order, int(request.form["id"]))
             o.set_paid(method="check")
             try:
                 db.session.commit()
@@ -82,7 +82,7 @@ def donation_index():
         # TODO support setting asynchronously, rather than redirecting
         if 'set_shipped' in request.form:
             # TODO log who set as paid
-            o = Order.query.get(request.form["id"])
+            o = db.get_or_404(Order, int(request.form["id"]))
             o.set_shipped()
             try:
                 db.session.commit()

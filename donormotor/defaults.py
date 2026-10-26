@@ -13,7 +13,7 @@ STATION_NAME = "WUVT-FM 90.7 Blacksburg, VA"
 STATION_SHORT_NAME = "WUVT-FM"
 STATION_URL = "https://www.wuvt.vt.edu"
 
-INTERNAL_IPS = ['127.0.0.1/8']
+INTERNAL_IPS = ['127.0.0.0/8']
 TRACKMAN_URL = "http://localhost:9090/"
 
 ADMINS = []

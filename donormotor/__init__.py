@@ -4,6 +4,7 @@ from flask import Flask, Request
 from flask_wtf.csrf import CSRFProtect
 from cachelib import RedisCache
 import humanize
+import json
 import os
 import redis
 from . import defaults
@@ -18,7 +19,7 @@ from sentry_sdk.integrations.sqlalchemy import SqlalchemyIntegration
 try:
     import uwsgi
 except ImportError:
-    pass
+    uwsgi = None
 
 json_mimetypes = ['application/json']
 
@@ -61,8 +62,7 @@ def format_uuid(value):
 class JSONRequest(Request):
     # from http://flask.pocoo.org/snippets/45/
     def wants_json(self):
-        mimes = json_mimetypes
-        mimes.append('text/html')
+        mimes = json_mimetypes + ['text/html']
         best = self.accept_mimetypes.best_match(mimes)
         return best in json_mimetypes and \
             self.accept_mimetypes[best] > \
@@ -81,7 +81,7 @@ config_path = os.environ.get('APP_CONFIG_PATH', 'config.py')
 if config_path.endswith('.py'):
     app.config.from_pyfile(config_path, silent=True)
 else:
-    app.config.from_json(config_path, silent=True)
+    app.config.from_file(config_path, load=json.load, silent=True)
 
 app.request_class = JSONRequest
 app.jinja_env.filters.update({
