@@ -1,7 +1,7 @@
 stripe<2
 loginpass<0.5
 Authlib<0.13
-Flask<3
+Flask<4
 
 boto3
 cachelib
