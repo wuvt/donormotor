@@ -6,7 +6,7 @@
 #
 alembic==1.20.1
     # via flask-migrate
-authlib==0.12.1
+authlib==1.6.12
     # via
     #   -r requirements.in
     #   loginpass
