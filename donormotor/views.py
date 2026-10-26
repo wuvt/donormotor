@@ -69,7 +69,7 @@ def error500(error):
 @app.route('/healthz')
 def healthcheck():
     try:
-        db_status = db.session.scalar(db.select([1]))
+        db_status = db.session.scalar(db.select(db.literal(1)))
     except sqlalchemy.exc.DBAPIError:
         db_status = None
 

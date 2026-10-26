@@ -1,11 +1,10 @@
-import distutils.cmd
-import distutils.log
+import logging
 import os.path
 import subprocess
-from setuptools import setup
+from setuptools import Command, setup
 
 
-class RenderSVGsCommand(distutils.cmd.Command):
+class RenderSVGsCommand(Command):
     user_options = []
 
     def initialize_options(self):
@@ -22,7 +21,7 @@ class RenderSVGsCommand(distutils.cmd.Command):
         for source in self.sources:
             self.announce(
                 "Rendering SVG: {0}".format(source[0]),
-                level=distutils.log.INFO)
+                level=logging.INFO)
             for zoom in (1, 2):
                 outname = source[0].replace('.svg', '-{0:d}x.png'.format(zoom))
                 subprocess.check_call([
@@ -47,34 +46,29 @@ setup(
     keywords="donormotor wuvt",
     url="https://github.com/wuvt/donormotor",
     install_requires=[
-        "bleach",
-        "celery",
+        "Authlib",
+        "boto3",
+        "cachelib",
         "click",
+        "email-validator",
         "Flask",
         "Flask-Migrate",
-        "Flask-RESTful",
         "Flask-SQLAlchemy",
         "Flask-WTF",
+        "google-api-python-client",
+        "google-auth",
         "humanize",
-        "Markdown",
-        "musicbrainzngs",
+        "loginpass",
         "passlib",
-        "psycopg2",
-        "pyasn1",
-        "pyasn1-modules",
+        "psycopg",
         "PyMySQL",
         "python-dateutil",
-        "python-editor",
-        "python-redis-lock",
-        "pytz",
         "redis",
         "requests",
-        "SQLAlchemy-Utils",
+        "sentry-sdk[flask]",
+        "SQLAlchemy",
         "stripe",
         "Unidecode",
-    ],
-    dependency_links=[
-        "git+https://github.com/wuvt/python-musicbrainzngs#egg=musicbrainzngs",
     ],
     cmdclass={
         "render_svgs": RenderSVGsCommand,

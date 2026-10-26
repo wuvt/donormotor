@@ -1,10 +1,10 @@
-FROM python:3.9.5
+FROM python:3.11
 
 RUN apt-get update && apt-get install -y \
             git \
             libcap-dev \
             libjansson-dev \
-            libpcre3-dev \
+            libpcre2-dev \
             librsvg2-bin \
             libsasl2-dev \
             libyaml-dev \
@@ -14,8 +14,8 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /usr/src/uwsgi
 
 # prepare uwsgi
-RUN wget -O uwsgi-2.0.15.tar.gz https://github.com/unbit/uwsgi/archive/2.0.15.tar.gz && \
-        tar --strip-components=1 -axvf uwsgi-2.0.15.tar.gz
+RUN wget -O uwsgi-2.0.31.tar.gz https://github.com/unbit/uwsgi/archive/2.0.31.tar.gz && \
+        tar --strip-components=1 -axvf uwsgi-2.0.31.tar.gz
 COPY uwsgi_profile.ini buildconf/donormotor.ini
 
 # build and install uwsgi
@@ -26,7 +26,7 @@ WORKDIR /usr/src/app
 
 # install python dependencies
 COPY requirements.txt /usr/src/app/
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt setuptools
 
 # copy application
 ADD migrations /usr/src/app/migrations

@@ -18,7 +18,10 @@ def role_add_user():
         if role not in auth_manager.all_roles:
             error_fields.append('role')
 
-        user = User.query.get(request.form['user'])
+        try:
+            user = db.session.get(User, int(request.form['user']))
+        except ValueError:
+            user = None
         if user is None:
             error_fields.append('user')
 
@@ -52,7 +55,7 @@ def role_add_user():
 @bp.route('/roles/users/remove/<int:id>', methods=['POST', 'DELETE'])
 @auth_manager.check_access('admin')
 def role_remove_user(id):
-    user_role = UserRole.query.get_or_404(id)
+    user_role = db.get_or_404(UserRole, id)
     db.session.delete(user_role)
 
     try:
@@ -66,7 +69,7 @@ def role_remove_user(id):
             '_csrf_token': app.jinja_env.globals['csrf_token'](),
         })
     else:
-        return redirect(url_for('.roles', 303))
+        return redirect(url_for('.roles'), 303)
 
 
 @bp.route('/roles/groups/add', methods=['GET', 'POST'])
@@ -108,7 +111,7 @@ def role_add_group():
 @bp.route('/roles/groups/remove/<int:id>', methods=['POST', 'DELETE'])
 @auth_manager.check_access('admin')
 def role_remove_group(id):
-    group_role = GroupRole.query.get_or_404(id)
+    group_role = db.get_or_404(GroupRole, id)
     db.session.delete(group_role)
     try:
         db.session.commit()
@@ -121,7 +124,7 @@ def role_remove_group(id):
             '_csrf_token': app.jinja_env.globals['csrf_token'](),
         })
     else:
-        return redirect(url_for('.roles', 303))
+        return redirect(url_for('.roles'), 303)
 
 
 @bp.route('/roles')
@@ -161,7 +164,7 @@ def user_add():
             raise
 
         user = User.query.filter_by(username=form.username.data).first()
-        user.set_password(form.data.password)
+        user.set_password(form.password.data)
 
         try:
             db.session.commit()
@@ -181,7 +184,7 @@ def user_edit(id):
     if app.config['AUTH_METHOD'] != "local":
         abort(404)
 
-    user = User.query.get_or_404(id)
+    user = db.get_or_404(User, id)
     form = UserEditForm(name=user.name, email=user.email)
 
     # Only admins can edit users other than themselves
