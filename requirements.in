@@ -1,18 +1,18 @@
 stripe<2
-loginpass<0.5
-Authlib<0.13
-Flask<3
 
+Authlib
 boto3
 cachelib
 click
 email-validator
+Flask
 Flask-Migrate
 Flask-SQLAlchemy
 Flask-WTF
 google-api-python-client
 google-auth
 humanize
+joserfc
 passlib
 psycopg
 PyMySQL

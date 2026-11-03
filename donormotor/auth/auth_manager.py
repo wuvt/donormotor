@@ -1,8 +1,8 @@
 import base64
 import datetime
 import os
-from flask import abort, make_response, redirect, request, session, \
-    url_for, _request_ctx_stack
+from flask import abort, g, make_response, redirect, request, session, \
+    url_for
 from functools import wraps
 
 from .models import GroupRole, User, UserRole, UserSession
@@ -32,33 +32,33 @@ class AuthManager(object):
         if app.config.get('AUTH_METHOD') == 'google':
             app.config.setdefault('GOOGLE_ALLOWED_DOMAINS', [])
 
-            from authlib.flask.client import OAuth
+            from authlib.integrations.flask_client import OAuth
             self.oauth = OAuth(app)
 
-            from loginpass import create_flask_blueprint
-            from loginpass.google import Google
-            from .google import handle_authorize
+            from .oauth_views import create_oauth_blueprint
+            from .google import handle_authorize, register_google
 
-            google_bp = create_flask_blueprint(Google, self.oauth,
+            register_google(self.oauth)
+            google_bp = create_oauth_blueprint('google', self.oauth,
                                                handle_authorize)
             app.register_blueprint(google_bp, url_prefix='/auth/google')
 
-            self.login_view = 'loginpass_google.login'
+            self.login_view = 'auth_google.login'
         elif app.config.get('AUTH_METHOD') == 'oidc':
-            from authlib.flask.client import OAuth
+            from authlib.integrations.flask_client import OAuth
             self.oauth = OAuth(app)
 
-            from loginpass import create_flask_blueprint
-            from .oidc import create_oidc_backend, handle_authorize
+            from .oauth_views import create_oauth_blueprint
+            from .oidc import handle_authorize, register_oidc
 
-            backend = create_oidc_backend('oidc',
-                                          app.config['OIDC_CLIENT_SECRETS'],
-                                          app.config.get('OIDC_SCOPES'))
-            oidc_bp = create_flask_blueprint(backend, self.oauth,
+            register_oidc(self.oauth, 'oidc',
+                          app.config['OIDC_CLIENT_SECRETS'],
+                          app.config.get('OIDC_SCOPES'))
+            oidc_bp = create_oauth_blueprint('oidc', self.oauth,
                                              handle_authorize)
             app.register_blueprint(oidc_bp, url_prefix='/auth/oidc')
 
-            self.login_view = 'loginpass_oidc.login'
+            self.login_view = 'auth_oidc.login'
         else:
             from . import local_views
             app.register_blueprint(local_views.bp, url_prefix='/auth/local')
@@ -72,25 +72,23 @@ class AuthManager(object):
         return base64.urlsafe_b64encode(os.urandom(64)).decode('ascii')
 
     def load_user_session(self):
-        ctx = _request_ctx_stack.top
-
         session_id = session.get('user_session_id')
         if session_id is None or type(session_id) != str:
-            ctx.user = AnonymousUserMixin()
-            ctx.user_roles = set([])
+            g.user = AnonymousUserMixin()
+            g.user_roles = set([])
         else:
             now = datetime.datetime.utcnow()
-            user_session = UserSession.query.get(session_id)
+            user_session = self.db.session.get(UserSession, session_id)
             if user_session is not None and \
                     now > user_session.login_at and now < user_session.expires:
-                ctx.user = user_session.user
-                ctx.user_roles = user_session.roles
+                g.user = user_session.user
+                g.user_roles = user_session.roles
             else:
-                ctx.user = AnonymousUserMixin()
-                ctx.user_roles = set([])
+                g.user = AnonymousUserMixin()
+                g.user_roles = set([])
 
     def load_user(self, user_id):
-        return User.query.get(user_id)
+        return self.db.session.get(User, user_id)
 
     def unauthorized(self):
         session['login_target'] = request.url
@@ -138,14 +136,14 @@ class AuthManager(object):
             raise
 
         session['user_session_id'] = session_id
-        _request_ctx_stack.top.user = user
-        _request_ctx_stack.top.user_roles = roles
+        g.user = user
+        g.user_roles = roles
         return True
 
     def logout_user(self):
         session_id = session.pop('user_session_id', None)
         if session_id is not None or type(session_id) != str:
-            user_session = UserSession.query.get(session_id)
+            user_session = self.db.session.get(UserSession, session_id)
             if user_session is not None:
                 self.db.session.delete(user_session)
                 try:
@@ -154,8 +152,8 @@ class AuthManager(object):
                     self.db.session.rollback()
                     raise
 
-        _request_ctx_stack.top.user = AnonymousUserMixin()
-        _request_ctx_stack.top.user_roles = set([])
+        g.user = AnonymousUserMixin()
+        g.user_roles = set([])
         return True
 
     def cleanup_expired_sessions(self):

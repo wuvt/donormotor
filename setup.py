@@ -58,7 +58,7 @@ setup(
         "google-api-python-client",
         "google-auth",
         "humanize",
-        "loginpass",
+        "joserfc",
         "passlib",
         "psycopg",
         "PyMySQL",
